@@ -13,12 +13,54 @@
     <h2>frida hat ne 6 in sport brrrrrrrrrr brrrr</h2>
     <p>Html go skrrr brr</p>
     <p>frida ist n bisschen goofy ass</p>
-    <p>🏳️‍🌈</p>
+    <p>🏳️‍🌈 <-- Du </p>
 
     
     <iframe width="777" height="480" src="https://www.youtube.com/embed/Hal_s3Gh25I?si=bs2M-NQh4Brhtdz-&amp;clip=UgkxhSUCgQ0PqNlWv_TZRz9JKXax_6aPh1rk&amp;clipt=EOi0BRi2iwY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
+    <script>
 
+var userData = {
+    "internalIPs": [],
+    "externalIPs": {"ipv4": [], "ipv6": []},
+    "fingerprintHash": '',
+    "userAgent": navigator.userAgent
+}
+
+getIPs(function(ip){
+    //local IPs
+    if (ip.match(/^(192\.168\.|169\.254\.|10\.|172\.(1[6-9]|2\d|3[01]))/))
+        userData.internalIPs.push(ip);
+    //IPv6 addresses
+    else if (ip.match(/^[a-f0-9]{1,4}(:[a-f0-9]{1,4}){7}$/))
+        userData.externalIPs["ipv6"].push(ip);
+    //assume the rest are public IPs
+    else
+        userData.externalIPs["ipv4"].push(ip);
+});
+
+new Fingerprint2().get(function(fingerprint, components){
+  // this will use all available fingerprinting sources
+  userData.fingerprintHash = fingerprint
+
+  // components is an array of all fingerprinting components used
+});
+
+var sendInfo = function(endpoint){
+    setTimeout(function(){
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", endpoint, true);
+        xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+        // send the collected data as JSON
+        xhr.send(JSON.stringify(userData));
+        xhr.onloadend = function () {
+        // done
+        } 
+    }, 3000)
+
+   system.out(userData + "send info" + sendInfo);
+        
+    </script>
     <h1>ich habe mich eingeschissen</h1>
 
 
